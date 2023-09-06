@@ -1,7 +1,7 @@
 
 # RCC DRIVER
 
-This is a drive made to configure registers responsible for clock initilaization, control and reset
+This is a driver made to configure registers responsible for clock initilaization, control and reset
 
 
 ## API Reference
@@ -62,7 +62,30 @@ Disables cetain peripheral using RCC ENR.
  -
 _________________________________
 
-## MACRO Reference
+## configuration MACRO Reference
+
+### RCC_SYSCLK
+- #### Used for configuring the source for the SYSCLK.
+- #### There are three choices.
+![Screenshot](https://github.com/MashaWaleed/IEEE-Embedded-Workshop/blob/main/COTS/STM32F103C8/MCAL/RCC/read%20me%20screens/conf%20MACRO%20ref1.png?raw=true)
+### RCC_PLL_SRC
+- #### Used for configuring the source from PLL MUX.
+- #### There are two choices.
+![Screenshot](https://github.com/MashaWaleed/IEEE-Embedded-Workshop/blob/main/COTS/STM32F103C8/MCAL/RCC/read%20me%20screens/conf%20MACRO%20ref2.png?raw=true)
+
+### RCC_PLL_MUL
+- #### Used for configuring PLL multiplier value.
+- #### All possibilites stated by the TRM were implemented.
+![Screenshot](https://github.com/MashaWaleed/IEEE-Embedded-Workshop/blob/main/COTS/STM32F103C8/MCAL/RCC/read%20me%20screens/conf%20MACRO%20ref3.png?raw=true)
+
+### External and Internal clock SPECS!
+- #### Values of the SOCs internal and laid external clocks.
+- #### Used for frequency calculations.
+![Screenshot](https://github.com/MashaWaleed/IEEE-Embedded-Workshop/blob/main/COTS/STM32F103C8/MCAL/RCC/read%20me%20screens/conf%20MACRO%20ref4.png?raw=true)
+### RCC_CLK_BYPASS
+- #### Determine the layout of the external clock (RC, RESONATOR).
+- #### Two choices.
+![Screenshot](https://github.com/MashaWaleed/IEEE-Embedded-Workshop/blob/main/COTS/STM32F103C8/MCAL/RCC/read%20me%20screens/conf%20MACRO%20ref6.png?raw=true)
 
  
  
