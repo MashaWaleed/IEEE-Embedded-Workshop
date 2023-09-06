@@ -30,7 +30,7 @@
  *
  * This register configures the system clock sources, prescalers, and peripherals clocks.
  */
-#define RCC_CFGR                *(volatile u32 *)(0x40021004)
+#define RCC_CFGR                (*((volatile u32 *)0x40021004))
 
 /**
  * @brief RCC Clock Interrupt Register (CIR)
@@ -113,8 +113,10 @@
  * @defgroup RCC_CFGR_Bit_Definitions RCC Control Register (RCC_CR) Bit Definitions
  * @{
  */
-
+#define RCC_CFGR_SW            0    /**< Bit for choosing SYSCLK src */
 #define RCC_CFGR_PLLSRC        16   /**< Bit for choosing pll src */
+#define RCC_CFGR_PLLMUL        18   /**< 4bit field to choose PLLMUL*/
+
 
 /** @} */ // end of RCC_CFGR_Bit_Definitions
 
@@ -139,5 +141,39 @@
 
 /** @} */ // end of RCC_Clock_Type
 
+
+/**
+ * @defgroup PLL_MULL  Macros
+ * @{
+ */
+
+#define MUL4             0x2   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL5             0x3   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL6             0x4   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL7             0x5   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL8             0x6   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL9             0x7   /**< High-Speed Internal Clock Source (HSI) */
+#define MUL6P5           0xD   /**< High-Speed Internal Clock Source (HSI) */
+
+
+/** @} */ // end of RCC_Clock_Source
+
+//----------------------Private Functions--------------
+
+/**
+ * @brief Check if multiplication is within safe limit.
+ *
+ * This funciton is crucial in choosing PLL and SYSCLK as using a bas MUL factor can lead to MCU damage.
+ *
+ *
+ *
+ * @return Std_ReturnType
+ * @retval E_OK     Frequency in safe limit.
+ * @retval E_NOT_OK Frequency not safe.
+ */
+
+Std_ReturnType PLL_MUL_Calculator(u8 Copy_u8Input_CLkValue, u8 Copy_u8MUL_Factor);
+
+#define F_SAFE_LIMIT          32
 
 #endif /* RCC_PRIVATE_H_ */

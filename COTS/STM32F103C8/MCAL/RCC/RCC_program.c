@@ -13,7 +13,25 @@
 #include "RCC_private.h"
 #include "RCC_config.h"
 
-/*****************************< Function Implementations *****************************/
+/*****************************< Private Funciton Implementation Implementations *****************************/
+
+Std_ReturnType PLL_MUL_Calculator(u8 Copy_u8Input_CLkValue, u8 Copy_u8MUL_Factor)
+{
+	//Handle the 6.5 corner case
+    Copy_u8MUL_Factor = (Copy_u8MUL_Factor == 0xD) ? 4.5 : Copy_u8MUL_Factor;
+
+    //conditional for the Frequency value
+	if((Copy_u8Input_CLkValue * (Copy_u8MUL_Factor + 2)) <= F_SAFE_LIMIT)
+	{
+		return E_OK;
+	}
+	else{
+		return E_NOT_OK;
+	}
+}
+
+
+/*****************************< API Implementations *****************************/
 Std_ReturnType MCAL_RCC_InitSysClock(void)
 {
     Std_ReturnType Local_FunctionStatus = E_NOT_OK;
@@ -62,14 +80,27 @@ Std_ReturnType MCAL_RCC_InitSysClock(void)
         	CLR_BIT(RCC_CFGR, RCC_CFGR_PLLSRC);            //HSI/2 SELECTED
 		#endif
 
+        /**< Check if multiplied value is within safe frequency limit. */
+		if(PLL_MUL_Calculator(RCC_PLL_INPUT_VAL, RCC_PLL_MUL) == E_OK)
+		{
+			/**< Set configure PLL MUL value . */
+			RCC_CFGR &= ~(0xF << RCC_CFGR_PLLMUL);
+			RCC_CFGR |= (RCC_PLL_MUL << RCC_CFGR_PLLMUL);
+			/**< Enable the PLL . */
+			SET_BIT(RCC_CR, RCC_CR_PLLON);
+			/**< Wait until the PLL clock is stable. */
+			while(!GET_BIT(RCC_CR, RCC_CR_PLLRDY));
+			/**< select PLL as SYSCLK without changing remaining bits. */
+			RCC_CFGR &= ~(0b11 << RCC_CFGR_SW);
+			RCC_CFGR |= (0b10 << RCC_CFGR_SW);
 
-        /**< Enable the PLL . */
-        SET_BIT(RCC_CR, RCC_CR_PLLON);
-        /**< Wait until the PLL clock is stable. */
-        while(!GET_BIT(RCC_CR, RCC_CR_PLLRDY));
-        /**< select PLL as SYSCLK. */
-        RCC_CFGR = 0x00000002;
-        Local_FunctionStatus = E_OK;
+			Local_FunctionStatus = E_OK;
+		}
+		else
+		{
+			Local_FunctionStatus = E_NOT_OK;
+
+		}
 
     #else
         #error "Wrong Choice !!"

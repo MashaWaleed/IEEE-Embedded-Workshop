@@ -34,7 +34,7 @@
 #define RCC_SYSCLK            RCC_PLL
 
 /**
- * @brief Select the PLL clock source.
+ * @brief Select the PLL clock source and Multiplier value.
  * @note Choose one of the available options:
  *       - RCC_HSI: High-Speed Internal Clock Source (HSI).
  *                  This option uses the internal high-speed oscillator as the system clock source.
@@ -47,6 +47,23 @@
 
 #define RCC_PLL_SRC           RCC_HSE
 
+#if RCC_PLL_SRC == RCC_HSE
+	#define RCC_PLL_INPUT_VAL     HSE_VAL
+#elif
+	#define RCC_PLL_INPUT_VAL     (HSI_VAL / 2)
+#endif
+
+#define RCC_PLL_MUL           MUL4
+
+/**
+ * @brief Define values for XTAL and internal crystal.
+ * @note Change either of these according to the specs of your SOC or your external clock choice:
+ *       HSI_VAL
+ *       HSE_VAL
+ */
+
+#define HSI_VAL              8
+#define HSE_VAL              8              //range is 4 --> 16 MHZ
 
 /**
  * @brief Configure the clock type for RCC_SYSCLK when using RCC_HSE.
