@@ -1,0 +1,4 @@
+../Src/RCC_program.c:18:16:PLL_MUL_Calculator	3
+../Src/RCC_program.c:35:16:MCAL_RCC_InitSysClock	3
+../Src/RCC_program.c:113:16:MCAL_RCC_EnablePeripheral	5
+../Src/RCC_program.c:145:16:MCAL_RCC_DisablePeripheral	5

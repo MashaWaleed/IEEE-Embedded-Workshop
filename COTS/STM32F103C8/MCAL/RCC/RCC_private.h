@@ -174,6 +174,6 @@
 
 Std_ReturnType PLL_MUL_Calculator(u8 Copy_u8Input_CLkValue, u8 Copy_u8MUL_Factor);
 
-#define F_SAFE_LIMIT          32
+#define F_SAFE_LIMIT          36
 
 #endif /* RCC_PRIVATE_H_ */
